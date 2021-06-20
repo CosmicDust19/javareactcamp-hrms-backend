@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/jobAdvertisements")
@@ -43,6 +44,11 @@ public class JobAdvertisementsController {
     @GetMapping("/getByActivationStatusTrueAndEmployerId")
     public DataResult<List<JobAdvertisement>> getByActivationStatusTrueAndEmployer_Id(@RequestParam int employerId) {
         return jobAdvertisementService.getByActivationStatusTrueAndEmployer_Id(employerId);
+    }
+
+    @GetMapping("/getById")
+    public DataResult<JobAdvertisement> getById(@RequestParam int jobAdvertisementId) {
+        return jobAdvertisementService.getById(jobAdvertisementId);
     }
 
     @PostMapping("/add")

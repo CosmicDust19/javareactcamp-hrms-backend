@@ -5,15 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidateSkillAddDto {
 
+    private int id;
+
     private int candidateId;
 
-    @Valid
     private Skill skill;
+
 }

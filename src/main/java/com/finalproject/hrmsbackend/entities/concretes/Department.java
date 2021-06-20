@@ -19,12 +19,11 @@ public class Department implements BaseEntity<Short> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "departments_id_generator")
-    @SequenceGenerator(name = "departments_id_generator", sequenceName = "departments_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "departments_id_generator", sequenceName = "departments_id_seq", allocationSize = 1, initialValue = 39)
     @Column(name = "id")
     private short id;
 
     @NotBlank(message = "cannot be empty")
-    @Pattern(regexp = "\\w+", message = "invalid department name")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 

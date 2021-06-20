@@ -2,10 +2,8 @@ package com.finalproject.hrmsbackend.business.concretes;
 
 import com.finalproject.hrmsbackend.business.abstracts.CandidateSchoolService;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.Result;
-import com.finalproject.hrmsbackend.core.utilities.results.SuccessDataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.SuccessResult;
+import com.finalproject.hrmsbackend.core.utilities.results.*;
+import com.finalproject.hrmsbackend.dataAccess.abstracts.CandidateDao;
 import com.finalproject.hrmsbackend.dataAccess.abstracts.CandidateSchoolDao;
 import com.finalproject.hrmsbackend.dataAccess.abstracts.DepartmentDao;
 import com.finalproject.hrmsbackend.dataAccess.abstracts.SchoolDao;
@@ -18,12 +16,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class CandidateSchoolManager implements CandidateSchoolService {
 
+    private final CandidateDao candidateDao;
     private final CandidateSchoolDao candidateSchoolDao;
     private final SchoolDao schoolDao;
     private final DepartmentDao departmentDao;
@@ -44,17 +45,24 @@ public class CandidateSchoolManager implements CandidateSchoolService {
     public Result add(CandidateSchoolAddDto candidateSchoolAddDto) {
         CandidateSchool candidateSchool = modelMapper.map(candidateSchoolAddDto, CandidateSchool.class);
 
+        Map<String, String> errors = new HashMap<>();
+
+        if (!candidateDao.existsById(candidateSchool.getCandidate().getId()))
+            errors.put("candidateId", "does not exist");
+        if (candidateSchool.getGraduationYear() != null && candidateSchool.getSchoolStartYear() > candidateSchool.getGraduationYear())
+            errors.put("start year - graduation year", "the graduation year cannot be a date before the start year");
+
         School school = candidateSchool.getSchool();
         school.setName(Utils.formName(school.getName()));
-        if (!Utils.tryToSaveIfNotExists(school, schoolDao)) {
+        if (!Utils.tryToSaveIfNotExists(school, schoolDao))
             school.setId(schoolDao.getByName(school.getName()).getId());
-        }
 
         Department department = candidateSchool.getDepartment();
         department.setName(Utils.formName(department.getName()));
-        if (!Utils.tryToSaveIfNotExists(department, departmentDao)) {
+        if (!Utils.tryToSaveIfNotExists(department, departmentDao))
             department.setId(departmentDao.getByName(department.getName()).getId());
-        }
+
+        if (!errors.isEmpty()) return new ErrorDataResult<>("Error", errors);
 
         candidateSchoolDao.save(candidateSchool);
         return new SuccessResult("Success");

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -13,8 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class CandidateCvAddDto {
 
-    private int candidateId;
+    @NotNull(message = "cannot be empty")
+    private Integer candidateId;
 
+    @NotBlank(message = "cannot be empty")
     private String title;
 
     private String coverLetter;

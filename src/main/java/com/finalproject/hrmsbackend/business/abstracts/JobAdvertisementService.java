@@ -17,6 +17,8 @@ public interface JobAdvertisementService {
 
     DataResult<List<JobAdvertisement>> getByActivationStatusTrueAndEmployer_Id(int employerId);
 
+    DataResult<JobAdvertisement> getById(int jobAdvertisementId);
+
     Result add(JobAdvertisementAddDto jobAdvertisementAddDto);
 
     Result updateActivationStatus(boolean isActive, int id);

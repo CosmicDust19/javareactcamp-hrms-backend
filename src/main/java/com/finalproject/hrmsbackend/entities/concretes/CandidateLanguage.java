@@ -1,6 +1,7 @@
 package com.finalproject.hrmsbackend.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.finalproject.hrmsbackend.entities.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "candidates_languages",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"candidate_id", "language_id"})})
-public class CandidateLanguage {
+public class CandidateLanguage implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "candidates_languages_id_generator")
@@ -34,5 +35,13 @@ public class CandidateLanguage {
 
     @Column(name = "language_level", nullable = false)
     private String languageLevel;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 }

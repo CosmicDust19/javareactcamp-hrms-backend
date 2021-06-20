@@ -250,6 +250,8 @@ CREATE TABLE public.job_advertisements
     min_salary                   integer,
     max_salary                   integer,
     number_of_people_to_be_hired smallint                       NOT NULL,
+    work_model                   char varying(20)               NOT NULL,
+    work_time                    char varying(20)               NOT NULL,
     application_deadline         date,
     is_active                    boolean                        NOT NULL DEFAULT TRUE,
     created_at                   timestamp(0) without time zone NOT NULL DEFAULT current_timestamp,
@@ -264,6 +266,101 @@ CREATE TABLE public.job_advertisements
     CONSTRAINT fk_job_advertisements_position_id FOREIGN KEY (position_id)
         REFERENCES public.positions (id)
 );
+
+INSERT INTO schools
+VALUES (1, 'Akdeniz University'),
+       (2, 'Aksaray University'),
+       (3, 'Anadolu University'),
+       (4, 'Ankara Medipol University'),
+       (5, 'Ankara University'),
+       (6, 'Atilim University'),
+       (7, 'Bahcesehir University'),
+       (8, 'Baskent University'),
+       (9, 'Bogazici University'),
+       (10, 'Bursa Technical University'),
+       (11, 'Bursa Uludag University'),
+       (12, 'Canakkale Onsekiz Mart University'),
+       (13, 'Cankaya University'),
+       (14, 'Nine September University'),
+       (15, 'Duzce University'),
+       (16, 'Ege University'),
+       (17, 'Erciyes University'),
+       (18, 'Erzurum Technical University'),
+       (19, 'Eskisehir Osmangazi University'),
+       (20, 'Eskisehir Technical University'),
+       (21, 'Firat University'),
+       (22, 'Galatasaray University'),
+       (23, 'Gazi University'),
+       (24, 'Gebze Technical University'),
+       (25, 'Gumushane University'),
+       (26, 'Hacettepe University'),
+       (27, 'Ihsan Dogramacı Bilkent University'),
+       (28, 'Istanbul Kultur University'),
+       (29, 'Istanbul Kent University'),
+       (30, 'Istanbul Medipol University'),
+       (31, 'Istanbul Technical University'),
+       (32, 'Istanbul University'),
+       (33, 'Istinye University'),
+       (34, 'Izmir Economics University'),
+       (35, 'Izmir High Technology institute'),
+       (36, 'Kadir Has University'),
+       (37, 'Karadeniz Technical University'),
+       (38, 'Kayseri University'),
+       (39, 'Kto Karatay University'),
+       (40, 'Maltepe University'),
+       (41, 'Marmara University'),
+       (42, 'Mimar Sinan Fine Arts University'),
+       (43, 'Mugla Sitki Kocman University'),
+       (44, 'Ondokuz Mayis University'),
+       (45, 'Middle East Technical University'),
+       (46, 'Ozyegin University'),
+       (47, 'Pamukkale University'),
+       (48, 'Sabanci University'),
+       (49, 'Sakarya University'),
+       (50, 'Ted University'),
+       (51, 'Tobb Economics and Technology University'),
+       (52, 'Yildiz Technical University'),
+       (53, 'Yeditepe University');
+
+INSERT INTO departments
+VALUES (1, 'Anthropology'),
+       (2, 'Architecture'),
+       (3, 'Archaeology'),
+       (4, 'Art History'),
+       (5, 'Astronomy and Astrophysics'),
+       (6, 'Biochemistry'),
+       (7, 'Biology'),
+       (8, 'Biomedical Engineering'),
+       (9, 'Biostatistics'),
+       (10, 'Chemical Engineering'),
+       (11, 'Chemistry'),
+       (12, 'Civil Engineering'),
+       (13, 'Computer Engineering'),
+       (14, 'Computer Science'),
+       (15, 'Dermatology'),
+       (16, 'Earth and Environmental Engineering'),
+       (17, 'Economics'),
+       (18, 'Electrical Engineering'),
+       (19, 'Epidemiology'),
+       (20, 'Film'),
+       (21, 'Finance and Economics'),
+       (22, 'Genetics and Development'),
+       (23, 'History'),
+       (24, 'Industrial Engineering'),
+       (25, 'Marketing'),
+       (26, 'Mathematics'),
+       (27, 'Mechanical Engineering'),
+       (28, 'Neurology'),
+       (29, 'Philosophy'),
+       (30, 'Pharmacology'),
+       (31, 'Physics'),
+       (32, 'Political Science'),
+       (33, 'Radiology'),
+       (34, 'Rehabilitation and Regenerative Medicine'),
+       (35, 'Religion'),
+       (36, 'Sociology'),
+       (37, 'Theatre'),
+       (38, 'Writing');
 
 INSERT INTO languages
 VALUES (1, 'Arabic'),
@@ -423,3 +520,33 @@ VALUES (1, 'Adana'),
        (79, 'Kilis'),
        (80, 'Osmaniye'),
        (81, 'Düzce');
+
+INSERT INTO users
+VALUES (1, 'example1@example.com', '123456', true),
+       (2, 'example2@example.com', '123456', true),
+       (3, 'example3@example.com', '123456', true),
+       (4, 'example4@example.com', '123456', true),
+       (5, 'example5@example.com', '123456', true),
+       (6, 'example6@example.com', '123456', true),
+       (7, 'example7@example.com', '123456', true),
+       (8, 'example8@example.com', '123456', true),
+       (9, 'example9@example.com', '123456', true);
+
+INSERT INTO system_employees
+VALUES (1, 'examplefn1', 'exampleln1'),
+       (2, 'examplefn2', 'exampleln2'),
+       (3, 'examplefn3', 'exampleln3');
+
+INSERT INTO candidates
+VALUES (4, 'examplefn4', 'exampleln4', '12345678910', 1994),
+       (5, 'examplefn5', 'exampleln5', '23456789101', 1995),
+       (6, 'examplefn6', 'exampleln6', '34567891012', 1996);
+
+UPDATE candidates
+SET github_account_link = 'https://github.com/CosmicDust19',
+    linkedin_account_link = 'https://www.linkedin.com/in/semih-kayan/' WHERE user_id = 4;
+
+INSERT INTO employers
+VALUES (7, 'example_company7', 'www.example_web_site7.com', '05005005057', true),
+       (8, 'example_company8', 'www.example_web_site8.com', '05005005058', true),
+       (9, 'example_company9', 'www.example_web_site9.com', '05005005059', true);

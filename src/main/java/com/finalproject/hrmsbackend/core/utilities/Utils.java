@@ -22,12 +22,16 @@ public class Utils {
 
     public <S, T extends BaseEntity<S>> boolean tryToSaveIfNotExists(T baseEntity, JpaRepository<T, S> jpaRepository) {
         try {
-            if (!jpaRepository.findById(baseEntity.getId()).isPresent()) {
+            if (!jpaRepository.existsById(baseEntity.getId())) {
+                //if it throws an error while saving, then entity saved before and the id was wrong
                 T savedEntity = jpaRepository.save(baseEntity);
                 baseEntity.setId(savedEntity.getId());
             }
+            //success (this boolean value , expresses that the id is available in the database)
             return true;
-        } catch (Exception e){
+        } catch (Exception exception){
+            //fail (if the return value is false, then threw an error and the id needed to be set after this method)
+            System.out.println(exception.getMessage());
             return false;
         }
     }

@@ -28,7 +28,6 @@ public class City implements BaseEntity<Short> {
     private short id;
 
     @NotBlank(message = "cannot be empty")
-    @Pattern(regexp = "\\w+", message = "invalid city name")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 

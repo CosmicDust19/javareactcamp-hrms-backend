@@ -1,6 +1,7 @@
 package com.finalproject.hrmsbackend.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.finalproject.hrmsbackend.entities.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "candidates_images")
-public class CandidateImage {
+public class CandidateImage implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "candidates_images_id_generator")
@@ -30,4 +31,11 @@ public class CandidateImage {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

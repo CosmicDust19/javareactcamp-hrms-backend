@@ -1,6 +1,7 @@
 package com.finalproject.hrmsbackend.entities.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.finalproject.hrmsbackend.entities.abstracts.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "candidates_job_experiences",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"candidate_id", "workplace", "position_id"})})
-public class CandidateJobExperience {
+public class CandidateJobExperience implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "candidates_job_experiences_id_generator")
@@ -41,5 +42,13 @@ public class CandidateJobExperience {
 
     @Column(name = "quit_year")
     private Short quitYear;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 }

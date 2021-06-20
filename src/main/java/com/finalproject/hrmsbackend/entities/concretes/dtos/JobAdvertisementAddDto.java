@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
@@ -17,13 +16,11 @@ public class JobAdvertisementAddDto {
 
     private int employerId;
 
-    @Valid
     private Position position;
 
     @NotBlank(message = "cannot be empty")
     private String jobDescription;
 
-    @Valid
     private City city;
 
     //If i do not declare this variable in a nullable type,
@@ -41,5 +38,9 @@ public class JobAdvertisementAddDto {
 
     @Future(message = "not a date in the future")
     private LocalDate applicationDeadline;
+
+    private String workModel;
+
+    private String workTime;
 
 }

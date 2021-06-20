@@ -56,6 +56,11 @@ public class JobAdvertisementManager implements JobAdvertisementService {
     }
 
     @Override
+    public DataResult<JobAdvertisement> getById(int jobAdvertisementId){
+        return new SuccessDataResult<>("Success", jobAdvertisementDao.getById(jobAdvertisementId));
+    }
+
+    @Override
     public Result add(JobAdvertisementAddDto jobAdvertisementAddDto) {
         JobAdvertisement jobAdvertisement = modelMapper.map(jobAdvertisementAddDto, JobAdvertisement.class);
 

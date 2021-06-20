@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
@@ -15,12 +14,12 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 public class CandidateSchoolAddDto {
 
+    private int id;
+
     private int candidateId;
 
-    @Valid
     private School school;
 
-    @Valid
     private Department department;
 
     @Min(value = 1900, message = "invalid school start year")
@@ -30,4 +29,5 @@ public class CandidateSchoolAddDto {
     @Min(value = 1900, message = "invalid graduation year")
     @Max(value = 2030, message = "invalid graduation year")
     private Short graduationYear;
+
 }

@@ -19,6 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "job_advertisements",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"employer_id", "position_id", "job_description", "city_id"})})
+@JsonIgnoreProperties("hibernateLazyInitializer")
 public class JobAdvertisement {
 
     @Id
@@ -56,6 +57,12 @@ public class JobAdvertisement {
 
     @Column(name = "application_deadline", nullable = false)
     private LocalDate applicationDeadline;
+
+    @Column(name = "work_model", nullable = false)
+    private String workModel;
+
+    @Column(name = "work_time", nullable = false)
+    private String workTime;
 
     @Column(name = "is_active", nullable = false)
     private boolean activationStatus = true;

@@ -47,28 +47,28 @@ public class CandidateCv {
     @Column(name = "last_modified_at")
     private LocalDate lastModifiedAt;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "candidates_cvs_job_experiences",
             joinColumns = {@JoinColumn(name = "cv_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "candidate_job_exp_id", referencedColumnName = "id")})
     @JsonIgnoreProperties(value = {"candidate"})
     private List<CandidateJobExperience> candidateJobExperiences;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "candidates_cvs_languages",
             joinColumns = {@JoinColumn(name = "cv_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "candidate_language_id", referencedColumnName = "id")})
     @JsonIgnoreProperties(value = {"candidate"})
     private List<CandidateLanguage> candidateLanguages;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "candidates_cvs_schools",
             joinColumns = {@JoinColumn(name = "cv_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "candidate_school_id", referencedColumnName = "id")})
     @JsonIgnoreProperties(value = {"candidate"})
     private List<CandidateSchool> candidateSchools;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "candidates_cvs_skills",
             joinColumns = {@JoinColumn(name = "cv_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "candidate_skill_id", referencedColumnName = "id")})
