@@ -28,6 +28,11 @@ public class EmployerManager implements EmployerService {
     }
 
     @Override
+    public DataResult<Employer> getById(int id) {
+        return new SuccessDataResult<>("Success", employerDao.getById(id));
+    }
+
+    @Override
     public Result add(EmployerAddDto employerAddDto) {
         if (!employerCheckService.isCompatibleWebSiteAndEmail(employerAddDto)) {
             return new ErrorResult("Incompatible Web Site & E-mail!");
