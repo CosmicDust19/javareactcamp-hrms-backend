@@ -8,7 +8,12 @@ import com.finalproject.hrmsbackend.entities.concretes.dtos.CandidateAddDto;
 
 public interface CandidateService extends UserService<Candidate> {
 
+    boolean existsByEmailAndPassword(String email, String password);
+
     DataResult<Candidate> getById(int id);
 
+    DataResult<Candidate> getByEmailAndPassword(String email, String password);
+
     Result add(CandidateAddDto candidateAddDto);
+
 }

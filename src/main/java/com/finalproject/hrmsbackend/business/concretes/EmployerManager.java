@@ -28,16 +28,27 @@ public class EmployerManager implements EmployerService {
     }
 
     @Override
+    public boolean existsByEmailAndPassword(String email, String password) {
+        return employerDao.existsByEmailAndPassword(email, password);
+    }
+
+    @Override
     public DataResult<Employer> getById(int id) {
+        if (!employerDao.existsById(id)){
+            return new ErrorDataResult<>("id does not exist");
+        }
         return new SuccessDataResult<>("Success", employerDao.getById(id));
+    }
+
+    @Override
+    public DataResult<Employer> getByEmailAndPassword(String email, String password) {
+        return new SuccessDataResult<>("Success", employerDao.getByEmailAndPassword(email, password));
     }
 
     @Override
     public Result add(EmployerAddDto employerAddDto) {
         if (!employerCheckService.isCompatibleWebSiteAndEmail(employerAddDto)) {
             return new ErrorResult("Incompatible Web Site & E-mail!");
-        } else if (!employerAddDto.getPassword().equals(employerAddDto.getPasswordRepeat())) {
-            return new ErrorResult("Password repetition mismatch");
         }
         simplifyPhoneNumber(employerAddDto);
         Employer employer = modelMapper.map(employerAddDto, Employer.class);

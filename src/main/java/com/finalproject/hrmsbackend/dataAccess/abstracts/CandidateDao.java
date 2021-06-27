@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CandidateDao extends JpaRepository<Candidate,Integer> {
+    boolean existsByEmailAndPassword(String email, String password);
+
+    Candidate getByEmailAndPassword(String email, String password);
 }

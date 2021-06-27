@@ -19,5 +19,4 @@ public class UserManager implements UserService<User> {
     public DataResult<List<User>> getAll() {
         return new SuccessDataResult<>("Success", userDao.findAll());
     }
-
 }

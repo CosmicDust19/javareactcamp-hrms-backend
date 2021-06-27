@@ -28,8 +28,21 @@ public class CandidateManager implements CandidateService {
     }
 
     @Override
+    public boolean existsByEmailAndPassword(String email, String password) {
+        return candidateDao.existsByEmailAndPassword(email, password);
+    }
+
+    @Override
     public DataResult<Candidate> getById(int id) {
+        if (!candidateDao.existsById(id)){
+            return new ErrorDataResult<>("id does not exist");
+        }
         return new SuccessDataResult<>("Success", candidateDao.getById(id));
+    }
+
+    @Override
+    public DataResult<Candidate> getByEmailAndPassword(String email, String password) {
+        return new SuccessDataResult<>("Success", candidateDao.getByEmailAndPassword(email, password));
     }
 
     @Override
@@ -37,11 +50,10 @@ public class CandidateManager implements CandidateService {
         if (!mernisServiceAdapter.isRealPerson(candidateAddDto.getNationalityId(),
                 candidateAddDto.getFirstName(), candidateAddDto.getLastName(), candidateAddDto.getBirthYear()))
             return new ErrorResult("mernis verification failed");
-        else if (!candidateAddDto.getPassword().equals(candidateAddDto.getPasswordRepeat()))
-            return new ErrorResult("password repetition mismatch");
         Candidate candidate = modelMapper.map(candidateAddDto, Candidate.class);
         emailService.sendVerificationMail(candidateAddDto.getEmail());
         candidateDao.save(candidate);
         return new SuccessResult("Email verified...  Candidate Saved.");
     }
+
 }

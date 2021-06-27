@@ -25,6 +25,11 @@ public class CandidatesController {
 
     private final CandidateService candidateService;
 
+    @GetMapping("/existsByEmailAndPassword")
+    public boolean existsByEmailAndPassword(@RequestParam String email, @RequestParam String password){
+        return candidateService.existsByEmailAndPassword(email, password);
+    }
+
     @GetMapping("/getAll")
     public DataResult<List<Candidate>> getAll() {
         return candidateService.getAll();
@@ -33,6 +38,11 @@ public class CandidatesController {
     @GetMapping("/getById")
     public DataResult<Candidate> getById(@RequestParam int id) {
         return candidateService.getById(id);
+    }
+
+    @GetMapping("/getByEmailAndPassword")
+    public DataResult<Candidate> getByEmailAndPassword(@RequestParam String email, @RequestParam String password){
+        return candidateService.getByEmailAndPassword(email, password);
     }
 
     @PostMapping("/add")

@@ -33,6 +33,14 @@ public class CandidateCvManager implements CandidateCvService {
     }
 
     @Override
+    public DataResult<CandidateCv> getById(int id) {
+        if (!candidateCvDao.existsById(id)){
+            return new ErrorDataResult<>("id does not exist");
+        }
+        return new SuccessDataResult<>("Success", candidateCvDao.getById(id));
+    }
+
+    @Override
     public Result add(CandidateCvAddDto candidateCvAddDto) {
         CandidateCv candidateCv = modelMapper.map(candidateCvAddDto, CandidateCv.class);
 

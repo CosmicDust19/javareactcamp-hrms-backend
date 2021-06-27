@@ -30,6 +30,11 @@ public class CandidateCvsController {
         return candidateCvService.getAll();
     }
 
+    @GetMapping("/getById")
+    public DataResult<CandidateCv> getById(@RequestParam int id) {
+        return candidateCvService.getById(id);
+    }
+
     @PostMapping(value = "/add")
     public ResponseEntity<?> add(@Valid @RequestBody CandidateCvAddDto candidateCvAddDto) {
         return ResponseEntity.ok(candidateCvService.add(candidateCvAddDto));
