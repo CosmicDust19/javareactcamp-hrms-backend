@@ -8,11 +8,15 @@ import com.finalproject.hrmsbackend.entities.concretes.dtos.EmployerAddDto;
 
 public interface EmployerService extends UserService<Employer> {
 
-    boolean existsByEmailAndPassword(String email, String password);
+    DataResult<Boolean> existsByEmailAndPassword(String email, String password);
 
     DataResult<Employer> getById(int id);
 
     DataResult<Employer> getByEmailAndPassword(String email, String password);
+
+    DataResult<Boolean> existsByCompanyName(String companyName);
+
+    DataResult<Boolean> existsByWebsite(String website);
 
     Result add(EmployerAddDto employerAddDto);
 

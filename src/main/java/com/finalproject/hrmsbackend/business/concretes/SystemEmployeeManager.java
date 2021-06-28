@@ -24,8 +24,13 @@ public class SystemEmployeeManager implements SystemEmployeeService {
     }
 
     @Override
-    public boolean existsByEmailAndPassword(String email, String password) {
-        return systemEmployeeDao.existsByEmailAndPassword(email, password);
+    public DataResult<Boolean> existsByEmailAndPassword(String email, String password) {
+        return new SuccessDataResult<>("Success", systemEmployeeDao.existsByEmailAndPassword(email, password));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByEmail(String email) {
+        return new SuccessDataResult<>("Success", systemEmployeeDao.existsByEmail(email));
     }
 
     @Override

@@ -7,5 +7,7 @@ import java.util.List;
 public interface UserService<User> {
 
     DataResult<List<User>> getAll();
+
+    DataResult<Boolean> existsByEmail(String email);
 }
 

@@ -26,7 +26,7 @@ public class SystemEmployeesController {
     private final SystemEmployeeService systemEmployeeService;
 
     @GetMapping("/existsByEmailAndPassword")
-    public boolean existsByEmailAndPassword(@RequestParam String email, @RequestParam String password){
+    public DataResult<Boolean> existsByEmailAndPassword(@RequestParam String email, @RequestParam String password){
         return systemEmployeeService.existsByEmailAndPassword(email, password);
     }
 

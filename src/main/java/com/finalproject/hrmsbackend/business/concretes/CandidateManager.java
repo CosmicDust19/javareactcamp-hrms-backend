@@ -28,8 +28,18 @@ public class CandidateManager implements CandidateService {
     }
 
     @Override
-    public boolean existsByEmailAndPassword(String email, String password) {
-        return candidateDao.existsByEmailAndPassword(email, password);
+    public DataResult<Boolean> existsByEmailAndPassword(String email, String password) {
+        return new SuccessDataResult<>("Success", candidateDao.existsByEmailAndPassword(email, password));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByEmail(String email) {
+        return new SuccessDataResult<>("Success", candidateDao.existsByEmail(email));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByNationalityId(String nationalityId) {
+        return new SuccessDataResult<>("Success", candidateDao.existsByNationalityId(nationalityId));
     }
 
     @Override

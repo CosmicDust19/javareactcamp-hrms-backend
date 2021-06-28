@@ -28,8 +28,23 @@ public class EmployerManager implements EmployerService {
     }
 
     @Override
-    public boolean existsByEmailAndPassword(String email, String password) {
-        return employerDao.existsByEmailAndPassword(email, password);
+    public DataResult<Boolean> existsByEmailAndPassword(String email, String password) {
+        return new SuccessDataResult<>("Success", employerDao.existsByEmailAndPassword(email, password));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByEmail(String email) {
+        return new SuccessDataResult<>("Success", employerDao.existsByEmail(email));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByCompanyName(String companyName) {
+        return new SuccessDataResult<>("Success", employerDao.existsByCompanyName(companyName));
+    }
+
+    @Override
+    public DataResult<Boolean> existsByWebsite(String website) {
+        return new SuccessDataResult<>("Success", employerDao.existsByWebsite(website));
     }
 
     @Override

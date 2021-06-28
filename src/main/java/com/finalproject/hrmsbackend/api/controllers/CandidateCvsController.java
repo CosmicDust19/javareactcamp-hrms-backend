@@ -40,6 +40,16 @@ public class CandidateCvsController {
         return ResponseEntity.ok(candidateCvService.add(candidateCvAddDto));
     }
 
+    @DeleteMapping(value = "/deleteById")
+    public DataResult<Boolean> deleteById(@RequestParam int id) {
+        return candidateCvService.deleteById(id);
+    }
+
+    @PutMapping(value = "/updateCoverLetter")
+    public DataResult<Boolean> updateCoverLetter(@RequestParam String coverLetter, @RequestParam int id) {
+        return candidateCvService.updateCoverLetter(coverLetter, id);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {

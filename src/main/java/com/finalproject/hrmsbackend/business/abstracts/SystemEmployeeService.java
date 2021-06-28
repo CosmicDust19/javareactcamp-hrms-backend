@@ -8,7 +8,7 @@ import com.finalproject.hrmsbackend.entities.concretes.dtos.SystemEmployeesAddDt
 
 public interface SystemEmployeeService extends UserService<SystemEmployee> {
 
-    boolean existsByEmailAndPassword(String email, String password);
+    DataResult<Boolean> existsByEmailAndPassword(String email, String password);
 
     DataResult<SystemEmployee> getById(int id);
 

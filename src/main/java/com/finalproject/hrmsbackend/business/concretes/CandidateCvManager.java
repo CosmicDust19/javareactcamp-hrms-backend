@@ -103,5 +103,16 @@ public class CandidateCvManager implements CandidateCvService {
         return new SuccessResult("Success");
     }
 
+    @Override
+    public DataResult<Boolean> deleteById(int id){
+        candidateCvDao.deleteById(id);
+        return new SuccessDataResult<>("Success", true);
+    }
+
+    @Override
+    public DataResult<Boolean> updateCoverLetter(String coverLetter, int id){
+        candidateCvDao.updateCoverLetter(coverLetter,id);
+        return new SuccessDataResult<>("Success", true);
+    }
 
 }

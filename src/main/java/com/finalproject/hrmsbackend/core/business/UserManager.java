@@ -19,4 +19,9 @@ public class UserManager implements UserService<User> {
     public DataResult<List<User>> getAll() {
         return new SuccessDataResult<>("Success", userDao.findAll());
     }
+
+    @Override
+    public DataResult<Boolean> existsByEmail(String email){
+        return new SuccessDataResult<>("Success", userDao.existsByEmail(email));
+    }
 }

@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 public interface SystemEmployeeDao extends JpaRepository<SystemEmployee,Integer> {
     boolean existsByEmailAndPassword(String email, String password);
 
+    boolean existsByEmail(String email);
+
     SystemEmployee getByEmailAndPassword(String email, String password);
 }
