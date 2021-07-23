@@ -1,14 +1,12 @@
 package com.finalproject.hrmsbackend.entities.concretes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.finalproject.hrmsbackend.entities.abstracts.BaseEntity;
+import com.finalproject.hrmsbackend.core.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -24,21 +22,20 @@ public class Position implements BaseEntity<Short> {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "positions_id_generator")
     @SequenceGenerator(name = "positions_id_generator", sequenceName = "positions_id_seq", allocationSize = 1, initialValue = 25)
     @Column(name = "id")
-    private short id;
+    private Short id;
 
-    @NotBlank(message = "cannot be empty")
-    @Column(name = "title", unique = true)
+    @Column(name = "title", nullable = false, unique = true, length = 100)
     private String title;
 
     @OneToMany(mappedBy = "position")
     @JsonIgnoreProperties("position")
     private List<JobAdvertisement> jobAdvertisements;
 
-    public Short getId() {
-        return id;
+    public Position(short id) {
+        this.id = id;
     }
 
-    public void setId(Short id) {
-        this.id = id;
+    public Position(String title) {
+        this.title = title;
     }
 }

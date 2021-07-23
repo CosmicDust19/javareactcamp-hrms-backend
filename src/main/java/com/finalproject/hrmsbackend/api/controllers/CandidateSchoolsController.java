@@ -1,24 +1,19 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.CandidateSchoolService;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.ErrorDataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.Result;
-import com.finalproject.hrmsbackend.entities.concretes.CandidateSchool;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.CandidateSchoolAddDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-@CrossOrigin
+@CrossOrigin(origins = {Utils.Const.LOCALHOST_3000, Utils.Const.HEROKU_APP})
+@Validated
 @RestController
 @RequestMapping("/api/candidateSchools")
 @RequiredArgsConstructor
@@ -26,53 +21,48 @@ public class CandidateSchoolsController {
 
     private final CandidateSchoolService candidateSchoolService;
 
-    @GetMapping("/getAll")
-    public DataResult<List<CandidateSchool>> getAll() {
-        return candidateSchoolService.getAll();
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAll() {
+        return Utils.getResponseEntity(candidateSchoolService.getAll());
     }
 
-    @GetMapping("/getAllSortedDesc")
-    public DataResult<List<CandidateSchool>> getAllSortedDesc() {
-        return candidateSchoolService.getAllSortedDesc();
+    @GetMapping("/get/byGradYear")
+    public ResponseEntity<?> getByGradYear(@RequestParam(required = false) Short sortDirection) {
+        return Utils.getResponseEntity(candidateSchoolService.getByGradYear(sortDirection));
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody CandidateSchoolAddDto candidateSchoolAddDto) {
-        return ResponseEntity.ok(candidateSchoolService.add(candidateSchoolAddDto));
+        return Utils.getResponseEntity(candidateSchoolService.add(candidateSchoolAddDto));
     }
 
-    @DeleteMapping(value = "/deleteById")
-    public DataResult<Boolean> deleteById(@RequestParam int id) {
-        return candidateSchoolService.deleteById(id);
+    @DeleteMapping(value = "/delete/byId")
+    public ResponseEntity<?> deleteById(@RequestParam int candSchId) {
+        return Utils.getResponseEntity(candidateSchoolService.deleteById(candSchId));
     }
 
-    @PutMapping(value = "/updateSchool")
-    public Result updateSchool(@RequestParam int schoolId, @RequestParam int id) {
-        return candidateSchoolService.updateSchool(schoolId, id);
+    @PutMapping(value = "/update/school")
+    public ResponseEntity<?> updateSchool(@RequestParam int schoolId, @RequestParam int candSchId) {
+        return Utils.getResponseEntity(candidateSchoolService.updateSchool(schoolId, candSchId));
     }
 
-    @PutMapping(value = "/updateDepartment")
-    public Result updateDepartment(@RequestParam short departmentId, @RequestParam int id) {
-        return candidateSchoolService.updateDepartment(departmentId, id);
+    @PutMapping(value = "/update/department")
+    public ResponseEntity<?> updateDepartment(@RequestParam short departmentId, @RequestParam int candSchId) {
+        return Utils.getResponseEntity(candidateSchoolService.updateDepartment(departmentId, candSchId));
     }
 
-    @PutMapping(value = "/updateStartYear")
-    public Result updateStartYear(@RequestParam short startYear, @RequestParam int id) {
-        return candidateSchoolService.updateStartYear(startYear, id);
+    @PutMapping(value = "/update/startYear")
+    public ResponseEntity<?> updateStartYear(@RequestParam @Min(value = Utils.Const.MIN_YEAR)
+                                             @Max(value = Utils.Const.THIS_YEAR) short startYear,
+                                             @RequestParam int candSchId) {
+        return Utils.getResponseEntity(candidateSchoolService.updateStartYear(startYear, candSchId));
     }
 
-    @PutMapping(value = "/updateGraduationYear")
-    public Result updateGraduationYear(Short graduationYear, @RequestParam int id) {
-        return candidateSchoolService.updateGraduationYear(graduationYear, id);
+    @PutMapping(value = "/update/gradYear")
+    public ResponseEntity<?> updateGradYear(@RequestParam(required = false) @Min(value = Utils.Const.MIN_YEAR)
+                                            @Max(value = Utils.Const.THIS_YEAR) Short graduationYear,
+                                            @RequestParam int candSchId) {
+        return Utils.getResponseEntity(candidateSchoolService.updateGradYear(graduationYear, candSchId));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ErrorDataResult<>("Error", validationErrors);
-    }
 }

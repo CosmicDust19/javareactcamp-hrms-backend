@@ -1,19 +1,21 @@
 package com.finalproject.hrmsbackend.entities.concretes.dtos;
 
-import com.finalproject.hrmsbackend.entities.concretes.Skill;
+import com.finalproject.hrmsbackend.core.utilities.MSGs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidateSkillAddDto {
 
-    private int id;
+    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    private Integer candidateId;
 
-    private int candidateId;
-
-    private Skill skill;
+    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    private Short skillId;
 
 }

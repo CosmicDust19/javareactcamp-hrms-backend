@@ -5,35 +5,36 @@ import com.finalproject.hrmsbackend.core.utilities.results.Result;
 import com.finalproject.hrmsbackend.entities.concretes.JobAdvertisement;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.JobAdvertisementAddDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface JobAdvertisementService {
 
     DataResult<List<JobAdvertisement>> getAll();
 
-    DataResult<List<JobAdvertisement>> getAllActivesAndVerified();
+    DataResult<List<JobAdvertisement>> getActiveVerified();
 
-    DataResult<List<JobAdvertisement>> getAllActivesAndVerifiedSortedByDate(int sortDirection);
+    DataResult<List<JobAdvertisement>> getActiveVerifiedByCreatedAt(Short sortDirection);
 
-    DataResult<List<JobAdvertisement>> getByActivesAndVerifiedAndEmployer_Id(int employerId);
+    DataResult<List<JobAdvertisement>> getPublicByEmployer(int employerId);
 
-    DataResult<List<JobAdvertisement>> getAllBySystemVerificationStatusFalse();
+    DataResult<List<JobAdvertisement>> getUnverified(Short sortDirection);
 
-    DataResult<List<JobAdvertisement>> findAllByActivesAndVerifiedAndApplicationDeadlineFuture();
+    DataResult<List<JobAdvertisement>> getPublic(Short sortDirection);
 
-    DataResult<List<JobAdvertisement>> findAllByActivesAndVerifiedAndApplicationDeadlinePast();
+    DataResult<List<JobAdvertisement>> getActiveVerifiedPast();
 
-    DataResult<JobAdvertisement> getById(int jobAdvertisementId);
+    DataResult<JobAdvertisement> getById(int jobAdvId);
 
     Result add(JobAdvertisementAddDto jobAdvertisementAddDto);
 
-    DataResult<Boolean> deleteById(int id);
+    DataResult<Boolean> deleteById(int jobAdvId);
 
-    Result updatePosition(short positionId, int id);
+    Result updatePosition(short positionId, int jobAdvId);
 
-    Result updateJobDescription(String jobDescription, int id);
+    Result updateJobDesc(String jobDescription, int jobAdvId);
 
-    Result updateCity(short cityId, int id);
+    Result updateCity(short cityId, int jobAdvId);
 
     Result updateMinSalary(Double minSalary, int id);
 
@@ -43,9 +44,14 @@ public interface JobAdvertisementService {
 
     Result updateWorkTime(String workTime, int id);
 
-    Result updateApplicationDeadLine(String applicationDeadLine, int id);
+    Result updateOpenPositions(short num, int id);
 
-    Result updateActivationStatus(boolean isActive, int id);
+    Result updateDeadLine(LocalDate deadLine, int id);
 
-    Result updateSystemVerificationStatus(boolean systemVerificationStatus, int id);
+    Result applyChanges(int jobAdvId);
+
+    Result updateActivation(boolean isActive, int id);
+
+    Result updateVerification(boolean systemVerificationStatus, int id);
+
 }

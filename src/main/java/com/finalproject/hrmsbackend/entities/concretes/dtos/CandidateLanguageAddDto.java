@@ -1,10 +1,12 @@
 package com.finalproject.hrmsbackend.entities.concretes.dtos;
 
-import com.finalproject.hrmsbackend.entities.concretes.Language;
+import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -12,13 +14,14 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class CandidateLanguageAddDto {
 
-    private int id;
+    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    private Integer candidateId;
 
-    private int candidateId;
+    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    private Short languageId;
 
-    private Language language;
-
-    @Pattern(regexp = "[ABC][12]", message = "not a english level according to the common european framework (A1, A2 etc.)")
+    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    @Pattern(regexp = Utils.Const.LANG_LVL_REGEXP, message = MSGs.ForAnnotation.INVALID_LANG_LVL)
     private String languageLevel;
 
 }

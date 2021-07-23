@@ -1,22 +1,18 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.DepartmentService;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.ErrorDataResult;
-import com.finalproject.hrmsbackend.entities.concretes.Department;
+import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@CrossOrigin
+@CrossOrigin(origins = {Utils.Const.LOCALHOST_3000, Utils.Const.HEROKU_APP})
+@Validated
 @RestController
 @RequestMapping("/api/departments")
 @RequiredArgsConstructor
@@ -24,23 +20,15 @@ public class DepartmentsController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/getAll")
-    public DataResult<List<Department>> getAll() {
-        return departmentService.getAll();
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAll() {
+        return Utils.getResponseEntity(departmentService.getAll());
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@Valid @RequestBody Department department) {
-        return ResponseEntity.ok(departmentService.add(department));
+    public ResponseEntity<?> add(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                 @Size(max = Utils.Const.MAX_DEPARTMENT_NAME) String departmentName) {
+        return Utils.getResponseEntity(departmentService.add(departmentName));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ErrorDataResult<>("Error", validationErrors);
-    }
 }

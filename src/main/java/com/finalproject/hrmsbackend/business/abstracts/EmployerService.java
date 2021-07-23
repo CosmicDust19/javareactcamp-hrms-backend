@@ -1,6 +1,5 @@
 package com.finalproject.hrmsbackend.business.abstracts;
 
-import com.finalproject.hrmsbackend.core.business.UserService;
 import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
 import com.finalproject.hrmsbackend.core.utilities.results.Result;
 import com.finalproject.hrmsbackend.entities.concretes.Employer;
@@ -8,34 +7,32 @@ import com.finalproject.hrmsbackend.entities.concretes.dtos.EmployerAddDto;
 
 import java.util.List;
 
-public interface EmployerService extends UserService<Employer> {
-
-    DataResult<Boolean> existsByEmailAndPassword(String email, String password);
+public interface EmployerService {
 
     DataResult<Boolean> existsByCompanyName(String companyName);
 
     DataResult<Boolean> existsByWebsite(String website);
 
-    DataResult<Employer> getById(int id);
+    DataResult<Employer> getById(int emplId);
 
-    DataResult<Employer> getByEmailAndPassword(String email, String password);
+    DataResult<Employer> getByEmailAndPW(String email, String password);
 
-    DataResult<List<Employer>> getAllBySystemVerificationStatusTrue();
+    DataResult<List<Employer>> getAll();
 
-    DataResult<List<Employer>> getAllBySystemVerificationStatusFalse();
+    DataResult<List<Employer>> getVerified();
+
+    DataResult<List<Employer>> getUnverified();
 
     Result add(EmployerAddDto employerAddDto);
 
-    DataResult<Boolean> deleteById(int id);
+    Result updateCompanyName(String companyName, int emplId);
 
-    Result updatePassword(String password, String oldPassword, int id);
+    Result updateEmailAndWebsite(String website, String email, int emplId);
 
-    Result updateCompanyName(String companyName, int id);
+    Result updatePhoneNumber(String phoneNumber, int emplId);
 
-    Result updateEmailAndWebsite(String website, String email, int id);
+    Result applyChanges(int emplId);
 
-    Result updatePhoneNumber(String phoneNumber, int id);
-
-    Result updateSystemVerificationStatus(boolean systemVerificationStatus, int id);
+    Result updateVerification(boolean systemVerificationStatus, int emplId);
 
 }

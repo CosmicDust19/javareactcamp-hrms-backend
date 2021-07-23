@@ -1,24 +1,21 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.EmployerService;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.ErrorDataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.Result;
-import com.finalproject.hrmsbackend.entities.concretes.Employer;
+import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.EmployerAddDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-@CrossOrigin
+@CrossOrigin(origins = {Utils.Const.LOCALHOST_3000, Utils.Const.HEROKU_APP})
+@Validated
 @RestController
 @RequestMapping("/api/employers")
 @RequiredArgsConstructor
@@ -26,88 +23,77 @@ public class EmployersController {
 
     private final EmployerService employerService;
 
-    @GetMapping("/existsByEmailAndPassword")
-    public DataResult<Boolean> existsByEmailAndPassword(@RequestParam String email, @RequestParam String password){
-        return employerService.existsByEmailAndPassword(email, password);
+    @GetMapping("/exists/byCompanyName")
+    public ResponseEntity<?> existsByCompanyName(@RequestParam String companyName) {
+        return Utils.getResponseEntity(employerService.existsByCompanyName(companyName));
     }
 
-    @GetMapping("/existsByCompanyName")
-    public DataResult<Boolean> existsByCompanyName(@RequestParam String companyName){
-        return employerService.existsByCompanyName(companyName);
+    @GetMapping("/exists/byWebsite")
+    public ResponseEntity<?> existsByWebsite(@RequestParam String website) {
+        return Utils.getResponseEntity(employerService.existsByWebsite(website));
     }
 
-    @GetMapping("/existsByWebsite")
-    public DataResult<Boolean> existsByWebsite(@RequestParam String website){
-        return employerService.existsByWebsite(website);
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAll() {
+        return Utils.getResponseEntity(employerService.getAll());
     }
 
-    @GetMapping("/getAll")
-    public DataResult<List<Employer>> getAll() {
-        return employerService.getAll();
+    @GetMapping("/get/public")
+    public ResponseEntity<?> getPublic() {
+        return Utils.getResponseEntity(employerService.getVerified());
     }
 
-    @GetMapping("/getPublicEmployers")
-    public DataResult<List<Employer>> getPublicEmployers(){
-        return employerService.getAllBySystemVerificationStatusTrue();
+    @GetMapping("/get/unverified")
+    public ResponseEntity<?> getUnverified() {
+        return Utils.getResponseEntity(employerService.getUnverified());
     }
 
-    @GetMapping("/getUnconfirmeds")
-    public DataResult<List<Employer>> getUnconfirmeds(){
-        return employerService.getAllBySystemVerificationStatusFalse();
+    @GetMapping("/get/byId")
+    public ResponseEntity<?> getById(@RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.getById(emplId));
     }
 
-    @GetMapping("/getById")
-    public DataResult<Employer> getById(@RequestParam int id) {
-        return employerService.getById(id);
-    }
-
-    @GetMapping("/getByEmailAndPassword")
-    public DataResult<Employer> getByEmailAndPassword(@RequestParam String email, @RequestParam String password){
-        return employerService.getByEmailAndPassword(email, password);
+    @GetMapping("/get/byEmailAndPW")
+    public ResponseEntity<?> getByEmailAndPW(@RequestParam String email, @RequestParam String password) {
+        return Utils.getResponseEntity(employerService.getByEmailAndPW(email, password));
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody EmployerAddDto employerAddDto) {
-        return ResponseEntity.ok(employerService.add(employerAddDto));
+        return Utils.getResponseEntity(employerService.add(employerAddDto));
     }
 
-    @DeleteMapping(value = "/deleteById")
-    public DataResult<Boolean> deleteById(@RequestParam int id) {
-        return employerService.deleteById(id);
+    @PutMapping(value = "/update/emailAndWebsite")
+    public ResponseEntity<?> updateEmailAndWebsite(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                                   @Pattern(regexp = Utils.Const.EMAIL_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String email,
+                                                   @RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                                   @Pattern(regexp = Utils.Const.WEBSITE_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String website,
+                                                   @RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.updateEmailAndWebsite(email, website, emplId));
     }
 
-    @PutMapping(value = "/updatePassword")
-    public Result updatePassword(@RequestParam String password, @RequestParam String oldPassword, @RequestParam int id) {
-        return employerService.updatePassword(password, oldPassword, id);
+    @PutMapping(value = "/update/companyName")
+    public ResponseEntity<?> updateCompanyName(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                               @Size(max = Utils.Const.MAX_COMPANY_NAME) String companyName,
+                                               @RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.updateCompanyName(companyName, emplId));
     }
 
-    @PutMapping(value = "/updateCompanyName")
-    public Result updateCompanyName(@RequestParam String companyName, @RequestParam int id) {
-        return employerService.updateCompanyName(companyName, id);
+    @PutMapping(value = "/update/phoneNumber")
+    public ResponseEntity<?> updatePhoneNumber(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                               @Pattern(regexp = Utils.Const.PHONE_NUM_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String phoneNumber,
+                                               @RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.updatePhoneNumber(phoneNumber, emplId));
     }
 
-    @PutMapping(value = "/updateEmailAndWebsite")
-    public Result updateEmailAndWebsite(@RequestParam String email, @RequestParam String website, @RequestParam int id) {
-        return employerService.updateEmailAndWebsite(email, website, id);
+    @PutMapping(value = "/update/applyChanges")
+    public ResponseEntity<?> applyChanges(@RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.applyChanges(emplId));
     }
 
-    @PutMapping(value = "/updatePhoneNumber")
-    public Result updatePhoneNumber(@RequestParam String phoneNumber, @RequestParam int id) {
-        return employerService.updatePhoneNumber(phoneNumber, id);
+    @PutMapping(value = "/update/verification")
+    public ResponseEntity<?> updateVerification(@RequestParam boolean status, @RequestParam int emplId) {
+        return Utils.getResponseEntity(employerService.updateVerification(status, emplId));
     }
 
-    @PutMapping(value = "/updateSystemVerificationStatus")
-    public Result updateSystemVerificationStatus(@RequestParam boolean systemVerificationStatus, @RequestParam int id) {
-        return employerService.updateSystemVerificationStatus(systemVerificationStatus, id);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ErrorDataResult<>("Error", validationErrors);
-    }
 }

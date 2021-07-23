@@ -1,23 +1,15 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.CandidateSkillService;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.ErrorDataResult;
-import com.finalproject.hrmsbackend.entities.concretes.CandidateSkill;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.CandidateSkillAddDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-@CrossOrigin
+@CrossOrigin(origins = {Utils.Const.LOCALHOST_3000, Utils.Const.HEROKU_APP})
 @RestController
 @RequestMapping("/api/candidateSkills")
 @RequiredArgsConstructor
@@ -25,28 +17,19 @@ public class CandidateSkillsController {
 
     private final CandidateSkillService candidateSkillService;
 
-    @GetMapping("/getAll")
-    public DataResult<List<CandidateSkill>> getAll() {
-        return candidateSkillService.getAll();
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAll() {
+        return Utils.getResponseEntity(candidateSkillService.getAll());
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody CandidateSkillAddDto candidateSkillAddDto) {
-        return ResponseEntity.ok(candidateSkillService.add(candidateSkillAddDto));
+        return Utils.getResponseEntity(candidateSkillService.add(candidateSkillAddDto));
     }
 
-    @DeleteMapping(value = "/deleteById")
-    public DataResult<Boolean> deleteById(@RequestParam int id) {
-        return candidateSkillService.deleteById(id);
+    @DeleteMapping(value = "/delete/byId")
+    public ResponseEntity<?> deleteById(@RequestParam int candSkillId) {
+        return Utils.getResponseEntity(candidateSkillService.deleteById(candSkillId));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ErrorDataResult<>("Error", validationErrors);
-    }
 }

@@ -1,24 +1,20 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.SystemEmployeeService;
-import com.finalproject.hrmsbackend.core.utilities.results.DataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.ErrorDataResult;
-import com.finalproject.hrmsbackend.core.utilities.results.Result;
-import com.finalproject.hrmsbackend.entities.concretes.SystemEmployee;
+import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.SystemEmployeesAddDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-@CrossOrigin
+@CrossOrigin(origins = {Utils.Const.LOCALHOST_3000, Utils.Const.HEROKU_APP})
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/systemEmployees")
@@ -26,63 +22,38 @@ public class SystemEmployeesController {
 
     private final SystemEmployeeService systemEmployeeService;
 
-    @GetMapping("/existsByEmailAndPassword")
-    public DataResult<Boolean> existsByEmailAndPassword(@RequestParam String email, @RequestParam String password){
-        return systemEmployeeService.existsByEmailAndPassword(email, password);
+    @GetMapping("/get/all")
+    public ResponseEntity<?> getAll() {
+        return Utils.getResponseEntity(systemEmployeeService.getAll());
     }
 
-    @GetMapping("/getAll")
-    public DataResult<List<SystemEmployee>> getAll() {
-        return systemEmployeeService.getAll();
+    @GetMapping("/get/byId")
+    public ResponseEntity<?> getById(@RequestParam int sysEmplId) {
+        return Utils.getResponseEntity(systemEmployeeService.getById(sysEmplId));
     }
 
-    @GetMapping("/getById")
-    public DataResult<SystemEmployee> getById(@RequestParam int id) {
-        return systemEmployeeService.getById(id);
-    }
-
-    @GetMapping("/getByEmailAndPassword")
-    public DataResult<SystemEmployee> getByEmailAndPassword(@RequestParam String email, @RequestParam String password){
-        return systemEmployeeService.getByEmailAndPassword(email, password);
+    @GetMapping("/get/byEmailAndPW")
+    public ResponseEntity<?> getByEmailAndPW(@RequestParam String email, @RequestParam String password) {
+        return Utils.getResponseEntity(systemEmployeeService.getByEmailAndPW(email, password));
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> add(@Valid @RequestBody SystemEmployeesAddDto systemEmployeesAddDto) {
-        return ResponseEntity.ok(systemEmployeeService.add(systemEmployeesAddDto));
+        return Utils.getResponseEntity(systemEmployeeService.add(systemEmployeesAddDto));
     }
 
-    @DeleteMapping(value = "/deleteById")
-    public DataResult<Boolean> deleteById(@RequestParam int id) {
-        return systemEmployeeService.deleteById(id);
+    @PutMapping(value = "/update/firstName")
+    public ResponseEntity<?> updateFirstName(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                             @Size(min = Utils.Const.MIN_FN, max = Utils.Const.MAX_FN) String firstName,
+                                             @RequestParam int sysEmplId) {
+        return Utils.getResponseEntity(systemEmployeeService.updateFirstName(firstName, sysEmplId));
     }
 
-    @PutMapping(value = "/updateEmail")
-    public Result updateEmail(@RequestParam String email, @RequestParam int id) {
-        return systemEmployeeService.updateEmail(email, id);
+    @PutMapping(value = "/update/lastName")
+    public ResponseEntity<?> updateLastName(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
+                                            @Size(min = Utils.Const.MIN_LN, max = Utils.Const.MAX_LN) String lastName,
+                                            @RequestParam int sysEmplId) {
+        return Utils.getResponseEntity(systemEmployeeService.updateLastName(lastName, sysEmplId));
     }
 
-    @PutMapping(value = "/updatePassword")
-    public Result updatePassword(@RequestParam String password, @RequestParam String oldPassword, @RequestParam int id) {
-        return systemEmployeeService.updatePassword(password, oldPassword, id);
-    }
-
-    @PutMapping(value = "/updateFirstName")
-    public Result updateFirstName(@RequestParam String firstName, @RequestParam int id) {
-        return systemEmployeeService.updateFirstName(firstName, id);
-    }
-
-    @PutMapping(value = "/updateLastName")
-    public Result updateLastName(@RequestParam String lastName, @RequestParam int id) {
-        return systemEmployeeService.updateLastName(lastName, id);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDataResult<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        return new ErrorDataResult<>("Error", validationErrors);
-    }
 }
