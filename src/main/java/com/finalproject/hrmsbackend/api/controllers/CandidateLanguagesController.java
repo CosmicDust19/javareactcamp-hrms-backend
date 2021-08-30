@@ -1,7 +1,7 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.CandidateLanguageService;
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.CandidateLanguageAddDto;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,8 @@ public class CandidateLanguagesController {
 
     @PutMapping(value = "/update/langLevel")
     public ResponseEntity<?> updateLangLevel(@RequestParam
-                                             @Pattern(regexp = Utils.Const.LANG_LVL_REGEXP, message = MSGs.ForAnnotation.INVALID_LANG_LVL) String languageLevel,
+                                             @Pattern(regexp = Utils.Const.LANG_LVL_REGEXP,
+                                                      message = Msg.Annotation.PATTERN + " (It should be A1, A2 etc.)") String languageLevel,
                                              @RequestParam int CandLangId) {
         return Utils.getResponseEntity(candidateLanguageService.updateLangLevel(languageLevel, CandLangId));
     }

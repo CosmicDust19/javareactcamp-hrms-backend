@@ -1,7 +1,7 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.SkillService;
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class SkillsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                 @Size(max = Utils.Const.MAX_SKILL_NAME) String skillName) {
+    public ResponseEntity<?> add(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                 @Size(max = Utils.Const.MAX_SKILL_NAME, message = Msg.Annotation.SIZE) String skillName) {
         return Utils.getResponseEntity(skillService.add(skillName));
     }
 

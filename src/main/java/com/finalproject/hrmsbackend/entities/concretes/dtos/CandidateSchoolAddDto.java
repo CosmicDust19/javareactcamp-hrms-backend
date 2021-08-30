@@ -1,6 +1,6 @@
 package com.finalproject.hrmsbackend.entities.concretes.dtos;
 
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,22 +15,22 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CandidateSchoolAddDto {
 
-    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    @NotNull(message = Msg.Annotation.REQUIRED)
     private Integer candidateId;
 
-    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    @NotNull(message = Msg.Annotation.REQUIRED)
     private Integer schoolId;
 
-    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
+    @NotNull(message = Msg.Annotation.REQUIRED)
     private Short departmentId;
 
-    @NotNull(message = MSGs.ForAnnotation.REQUIRED)
-    @Min(value = Utils.Const.MIN_YEAR)
-    @Max(value = Utils.Const.THIS_YEAR)
+    @NotNull(message = Msg.Annotation.REQUIRED)
+    @Min(value = Utils.Const.MIN_YEAR, message = Msg.Annotation.MIN)
+    @Max(value = Utils.Const.THIS_YEAR, message = Msg.Annotation.MAX)
     private Short startYear;
 
-    @Min(value = Utils.Const.MIN_YEAR)
-    @Max(value = Utils.Const.THIS_YEAR)
+    @Min(value = Utils.Const.MIN_YEAR, message = Msg.Annotation.MIN)
+    @Max(value = Utils.Const.THIS_YEAR, message = Msg.Annotation.MAX)
     private Short graduationYear;
 
 }

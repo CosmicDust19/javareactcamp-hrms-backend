@@ -1,7 +1,7 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.EmployerService;
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.entities.concretes.dtos.EmployerAddDto;
 import lombok.RequiredArgsConstructor;
@@ -64,24 +64,24 @@ public class EmployersController {
     }
 
     @PutMapping(value = "/update/emailAndWebsite")
-    public ResponseEntity<?> updateEmailAndWebsite(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                                   @Pattern(regexp = Utils.Const.EMAIL_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String email,
-                                                   @RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                                   @Pattern(regexp = Utils.Const.WEBSITE_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String website,
+    public ResponseEntity<?> updateEmailAndWebsite(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                                   @Pattern(regexp = Utils.Const.EMAIL_REGEXP, message = Msg.Annotation.PATTERN) String email,
+                                                   @RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                                   @Pattern(regexp = Utils.Const.WEBSITE_REGEXP, message = Msg.Annotation.PATTERN) String website,
                                                    @RequestParam int emplId) {
         return Utils.getResponseEntity(employerService.updateEmailAndWebsite(email, website, emplId));
     }
 
     @PutMapping(value = "/update/companyName")
-    public ResponseEntity<?> updateCompanyName(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                               @Size(max = Utils.Const.MAX_COMPANY_NAME) String companyName,
+    public ResponseEntity<?> updateCompanyName(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                               @Size(max = Utils.Const.MAX_COMPANY_NAME, message = Msg.Annotation.SIZE) String companyName,
                                                @RequestParam int emplId) {
         return Utils.getResponseEntity(employerService.updateCompanyName(companyName, emplId));
     }
 
     @PutMapping(value = "/update/phoneNumber")
-    public ResponseEntity<?> updatePhoneNumber(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                               @Pattern(regexp = Utils.Const.PHONE_NUM_REGEXP, message = MSGs.ForAnnotation.INVALID_FORMAT) String phoneNumber,
+    public ResponseEntity<?> updatePhoneNumber(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                               @Pattern(regexp = Utils.Const.PHONE_NUM_REGEXP, message = Msg.Annotation.PATTERN) String phoneNumber,
                                                @RequestParam int emplId) {
         return Utils.getResponseEntity(employerService.updatePhoneNumber(phoneNumber, emplId));
     }

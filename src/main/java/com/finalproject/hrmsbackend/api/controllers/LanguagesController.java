@@ -1,7 +1,7 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.LanguageService;
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public class LanguagesController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> add(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                 @Size(max = Utils.Const.MAX_LANGUAGE_NAME) String languageName) {
+    public ResponseEntity<?> add(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                 @Size(max = Utils.Const.MAX_LANGUAGE_NAME, message = Msg.Annotation.SIZE) String languageName) {
         return Utils.getResponseEntity(languageService.add(languageName));
     }
 

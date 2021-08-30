@@ -21,6 +21,10 @@ public interface CheckService {
 
     boolean startEndConflict(short start, Short end);
 
+    boolean equals(String x, String y);
+
+    boolean equals(Integer x, Integer y);
+
     boolean equals(Double num1, Double num2);
 
     boolean equals(Short x, Short y);

@@ -1,7 +1,7 @@
 package com.finalproject.hrmsbackend.api.controllers;
 
 import com.finalproject.hrmsbackend.business.abstracts.CvService;
-import com.finalproject.hrmsbackend.core.utilities.MSGs;
+import com.finalproject.hrmsbackend.core.utilities.Msg;
 import com.finalproject.hrmsbackend.core.utilities.Utils;
 import com.finalproject.hrmsbackend.dataAccess.abstracts.CandidateJobExperienceDao;
 import com.finalproject.hrmsbackend.dataAccess.abstracts.CandidateLanguageDao;
@@ -57,14 +57,14 @@ public class CvsController {
     }
 
     @PutMapping(value = "/update/title")
-    public ResponseEntity<?> updateTitle(@RequestParam @NotBlank(message = MSGs.ForAnnotation.EMPTY)
-                                         @Size(max = Utils.Const.MAX_CV_TITLE) String title, @RequestParam int cvId) {
+    public ResponseEntity<?> updateTitle(@RequestParam @NotBlank(message = Msg.Annotation.REQUIRED)
+                                         @Size(max = Utils.Const.MAX_CV_TITLE, message = Msg.Annotation.SIZE) String title, @RequestParam int cvId) {
         return Utils.getResponseEntity(cvService.updateTitle(title, cvId));
     }
 
     @PutMapping(value = "/update/coverLetter")
     public ResponseEntity<?> updateCoverLetter(@RequestParam(required = false)
-                                               @Size(max = Utils.Const.MAX_CV_COVER_LETTER) String coverLetter, @RequestParam int cvId) {
+                                               @Size(max = Utils.Const.MAX_CV_COVER_LETTER, message = Msg.Annotation.SIZE) String coverLetter, @RequestParam int cvId) {
         return Utils.getResponseEntity(cvService.updateCoverLetter(coverLetter, cvId));
     }
 
